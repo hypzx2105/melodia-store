@@ -14,6 +14,7 @@ app.use(require('cors')({ credentials: true, origin: process.env.LOCAL_HOST }));
 
 // Routers
 
+app.use('/products', require('./routes/products'));
 
 // Port
 const PORT = process.env.SERVER_PORT;
