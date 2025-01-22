@@ -4,11 +4,17 @@ const Product = require('../models/Product');
 
 // Add a test product
 router.get('/add', async (req, res) => {
+   conole.log('add')
     const sampleProduct = new Product({
-        name: 'Test Guitar',
+        id: '1',
+        name: 'Guitar',
         price: 199,
-        description: 'A test product for verification'
+        description: 'Acustic guitar, color black.'
+
     });
+
+    console.log(sampleProduct);
+
 
     try {
         await sampleProduct.save();

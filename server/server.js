@@ -12,6 +12,9 @@ const createError = require('http-errors'); // Required for error handling
 app.use(require('body-parser').json()); // Parse JSON requests
 app.use(require('cors')({ credentials: true, origin: process.env.LOCAL_HOST })); // CORS setup
 
+// Database
+require('./config/db');
+
 // Routers
 
 app.use('/products', require('./routes/products'));

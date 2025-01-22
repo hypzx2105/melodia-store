@@ -1,10 +1,26 @@
 import React, { Component } from 'react';
+import axios from 'axios';
+
 
 class ProductPage extends Component {
     state = { products: [] };
 
     componentDidMount() {
         fetch('http://localhost:5000/products')
+
+        axios.get("./products.js")
+            .then(res =>
+            {
+                if(res.data)
+                {
+                    this.setState({products: res.data})
+                }
+                else
+                {
+                    console.log("Records not found")
+                }
+
+            })
             .then((res) => res.json())
             .then((data) => this.setState({ products: data }))
             .catch((err) => console.error(err));
