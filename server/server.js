@@ -1,19 +1,19 @@
-// Server-side global variables
+
 require('dotenv').config({ path: './config/.env' });
 
-// Database
+
 require('./config/db');
 
 // Express
 const express = require('express');
 const app = express();
-const createError = require('http-errors'); // Required for error handling
+const createError = require('http-errors');
 
-app.use(require('body-parser').json()); // Parse JSON requests
-app.use(require('cors')({ credentials: true, origin: process.env.LOCAL_HOST })); // CORS setup
+app.use(require('body-parser').json());
+app.use(require('cors')({ credentials: true, origin: process.env.LOCAL_HOST }));
 
 // Routers
-app.use('/products', require('./routes/products')); // Corrected route
+app.use('/products', require('./routes/products'));
 
 // Port
 const PORT = process.env.SERVER_PORT;

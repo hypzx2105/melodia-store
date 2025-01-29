@@ -5,7 +5,7 @@ const productSchema = new mongoose.Schema({
     price: Number,
     description: String,
     image: String,
-    rating: { type: Number, default: 0 } // New field
+    rating: { type: Number, default: 0 }
 });
 
 module.exports = mongoose.model('Product', productSchema);
