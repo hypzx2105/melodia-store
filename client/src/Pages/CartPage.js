@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import '../Styles/cart.scss';
 
 class CartPage extends Component {
     handleRemoveFromCart = (productId) => {
         this.props.removeFromCart(productId);
+    };
+
+    handleClearCart = () => {
+        this.props.clearCart();
     };
 
     render() {
@@ -12,6 +15,7 @@ class CartPage extends Component {
         return (
             <div className="cart-page">
                 <h1>Shopping Cart</h1>
+                {cart.length > 0 && (<button onClick={this.handleClearCart}>Clear Cart</button>)}
                 {cart.length === 0 ? (
                     <p>Your cart is empty</p>
                 ) : (
@@ -22,7 +26,10 @@ class CartPage extends Component {
                                 <div>
                                     <h3>{product.name}</h3>
                                     <p>${product.price}</p>
-                                    <button className="remove-btn" onClick={() => this.handleRemoveFromCart(product._id)}>
+                                    <button
+                                        className="remove-btn"
+                                        onClick={() => this.handleRemoveFromCart(product._id)}
+                                    >
                                         Remove
                                     </button>
                                 </div>
@@ -30,15 +37,10 @@ class CartPage extends Component {
                         ))}
                     </ul>
                 )}
+
             </div>
         );
     }
 }
 
 export default CartPage;
-
-
-
-
-
-
