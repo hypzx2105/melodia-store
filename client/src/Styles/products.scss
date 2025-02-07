@@ -1,3 +1,60 @@
+.welcome-section {
+  text-align: center;
+  //background-color: #5D4A3E;
+  color: white;
+  padding: 50px 20px;
+  font-size: 1.5rem;
+//  display: flex;
+  margin-left: 570px;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  //box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  //background-image: url("blended_background.png");
+  h1 {
+    font-size: 3rem;
+    margin-bottom: 10px;
+  }
+
+  p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+  }
+#welcom_butt{
+  margin : 25px;
+  padding: 20px;
+}
+
+
+
+  .content {
+    display: none;
+  }
+
+  .body .content {
+    display: block;
+    padding-top: 50px;
+  }
+
+
+
+  button {
+    background-color: #F4F1EA;
+    color: #5D4A3E;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.3s ease;
+
+    &:hover {
+      background-color: #D4C8BE;
+    }
+  }
+}
+
+
 .products-container {
   display: flex;
   flex-wrap: wrap;
@@ -8,6 +65,13 @@
   border-radius: 10px;
   margin: 20px auto;
   max-width: 1200px;
+  .body {
+    display: flex;
+    //background-color: brown;
+
+    min-height: 100vh;
+    color: white;
+  }
 
   h1 {
     color: #5D4A3E;
@@ -41,8 +105,8 @@
   margin-bottom: 20px;
   width: 20%;
   padding: 10px;
-  padding-right: 10px;
-  height: auto;
+
+  //height: 100vh;
   border-radius: 10px;
   box-shadow: 10px 10px #5D4A3E;
   label {
@@ -73,7 +137,8 @@
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+ // justify-content: center;
+  justify-content: flex-end;
   gap: 20px;
   padding: 20px;
   margin: 20px;
