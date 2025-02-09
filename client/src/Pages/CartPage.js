@@ -6,6 +6,8 @@ class CartPage extends Component {
         this.props.removeFromCart(productId);
     };
 
+
+
     render() {
         const { cart } = this.props;
 
