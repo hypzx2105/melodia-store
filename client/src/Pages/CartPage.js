@@ -2,9 +2,18 @@ import React, { Component } from 'react';
 import '../Styles/cart.scss';
 
 class CartPage extends Component {
+
     handleRemoveFromCart = (productId) => {
-        this.props.removeFromCart(productId);
+        this.setState((prevState) => {
+            const updatedCart = [...prevState.cart];
+            const index = updatedCart.findIndex(product => product._id === productId);
+            if (index !== -1) {
+                updatedCart.splice(index, 1);
+            }
+            return { cart: updatedCart };
+        });
     };
+
 
 
 

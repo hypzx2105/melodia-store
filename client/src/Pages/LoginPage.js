@@ -29,15 +29,10 @@ export default class Login extends Component {
             .then(res => {
                 if (res.data.token) {
                     sessionStorage.setItem("token", res.data.token);
-                    sessionStorage.setItem("role", res.data.role);  // Store user role
+                    sessionStorage.setItem("role", res.data.role);
                     sessionStorage.setItem("name", res.data.name);
                     sessionStorage.setItem("email", res.data.email);
 
-                    if (res.data.profilePhoto) {
-                        sessionStorage.setItem("profilePhoto", res.data.profilePhoto);
-                    }
-
-                    console.log("User logged in.");
                     this.setState({ isLoggedIn: true });
                 }
             })
@@ -45,6 +40,7 @@ export default class Login extends Component {
                 this.setState({ errorMessage: "Invalid email or password." });
             });
     };
+
 
     render() {
         if (this.state.isLoggedIn) {
