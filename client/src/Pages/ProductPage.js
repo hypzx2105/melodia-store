@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/products.scss';
 
+
 class ProductPage extends Component {
     state = {
         products: [],
