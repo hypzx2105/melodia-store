@@ -4,9 +4,11 @@ const UserSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    role: { type: String, enum: ["customer", "admin"], default: "customer" }
+    accessLevel: { type: Number, required: true, default: 1 },
+    profilePic: { type: String, default: "" }
 });
 
 module.exports = mongoose.model("User", UserSchema);
+
 
 

@@ -1,16 +1,15 @@
 .welcome-section {
   text-align: center;
-  //background-color: #5D4A3E;
+
   color: white;
   padding: 50px 20px;
   font-size: 1.5rem;
-  //  display: flex;
+
   margin-left: 570px;
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  //box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  //background-image: url("blended_background.png");
+
   h1 {
     font-size: 3rem;
     margin-bottom: 10px;
@@ -67,7 +66,7 @@
   max-width: 1200px;
   .body {
     display: flex;
-    //background-color: brown;
+
 
     min-height: 100vh;
     color: white;
@@ -106,7 +105,7 @@
   width: 20%;
   padding: 10px;
 
-  //height: 100vh;
+
   border-radius: 10px;
   box-shadow: 10px 10px #5D4A3E;
   label {
@@ -137,7 +136,7 @@
 .product-list {
   display: flex;
   flex-wrap: wrap;
-  // justify-content: center;
+
   justify-content: flex-end;
   gap: 20px;
   padding: 20px;
@@ -207,6 +206,23 @@
       background: #2980B9;
     }
   }
+
+  .product-card button {
+    background: #3498DB;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.3s ease;
+    border-radius: 5px;
+    font-size: 1rem;
+  }
+
+  .product-card button:active {
+    transform: scale(0.9);
+    background: #2980B9;
+  }
+
 }
 
 

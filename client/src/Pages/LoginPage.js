@@ -1,84 +1,62 @@
 import React, { Component } from "react";
-import { Navigate, Link } from "react-router-dom";
 import axios from "axios";
+import { SERVER_HOST } from "../configClient/global_constants";
+import { Navigate } from "react-router-dom";
+import "../Styles/styles.scss";
 
-import { SERVER_HOST } from "../configClient/global_constants.js";
-
-export default class Login extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: "",
-            password: "",
-            errorMessage: "",
-            isLoggedIn: false
-        };
-    }
-
-    handleChange = (e) => {
-        this.setState({ [e.target.name]: e.target.value });
+class LoginPage extends Component {
+    state = {
+        email: "",
+        password: "",
+        redirect: false,
+        errorMessage: ""
     };
 
-    handleSubmit = (e) => {
-        e.preventDefault();
+    handleInputChange = (event) => {
+        this.setState({ [event.target.name]: event.target.value });
+    };
 
-        axios.post(`${SERVER_HOST}/users/login`, {
-            email: this.state.email,
-            password: this.state.password
-        })
-            .then(res => {
-                if (res.data.token) {
-                    sessionStorage.setItem("token", res.data.token);
-                    sessionStorage.setItem("role", res.data.role);
-                    sessionStorage.setItem("name", res.data.name);
-                    sessionStorage.setItem("email", res.data.email);
+    handleSubmit = async (event) => {
+        event.preventDefault();
 
-                    this.setState({ isLoggedIn: true });
-                }
-            })
-            .catch(err => {
-                this.setState({ errorMessage: "Invalid email or password." });
+        try {
+            const response = await axios.post(`${SERVER_HOST}/users/login`, {
+                email: this.state.email,
+                password: this.state.password
             });
-    };
 
+            localStorage.setItem("token", response.data.token);
+            localStorage.setItem("userId", response.data.userId);
+            localStorage.setItem("role", response.data.role);
+            localStorage.setItem("name", response.data.name);
+            localStorage.setItem("email", response.data.email);
+            localStorage.setItem("profilePic", response.data.profilePic || "");
+
+            this.props.updateUserState();
+            this.setState({ redirect: true });
+        } catch (error) {
+            this.setState({ errorMessage: error.response?.data?.errorMessage || "Login failed." });
+        }
+    };
 
     render() {
-        if (this.state.isLoggedIn) {
-            return <Navigate to="/ProductPage" />;
+        if (this.state.redirect) {
+            return <Navigate to="/" />;
         }
 
         return (
-            <form className="form-container" onSubmit={this.handleSubmit}>
-                <h2>Login</h2>
-
-                <input
-                    name="email"
-                    type="email"
-                    placeholder="Email"
-                    autoComplete="email"
-                    value={this.state.email}
-                    onChange={this.handleChange}
-                /><br />
-
-                <input
-                    name="password"
-                    type="password"
-                    placeholder="Password"
-                    autoComplete="current-password"
-                    value={this.state.password}
-                    onChange={this.handleChange}
-                /><br /><br />
-
-                <button type="submit" className="green-button">Login</button>
-                <Link className="red-button" to={"/ProductPage"}>Cancel</Link>
-
-                {this.state.errorMessage && <div className="error">{this.state.errorMessage}<br /></div>}
-            </form>
+            <div className="login-container">
+                <h1>Login</h1>
+                {this.state.errorMessage && <p className="error-message">{this.state.errorMessage}</p>}
+                <form onSubmit={this.handleSubmit}>
+                    <input type="email" name="email" placeholder="Email" onChange={this.handleInputChange} required />
+                    <input type="password" name="password" placeholder="Password" onChange={this.handleInputChange} required />
+                    <button type="submit">Login</button>
+                </form>
+                <p>Don't have an account? <a href="/register">Register</a></p>
+            </div>
         );
     }
 }
 
-
-
-
-
+export default LoginPage;

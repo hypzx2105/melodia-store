@@ -1,46 +1,41 @@
+require("dotenv").config({ path: "./config/.env" });
+require("./config/db");
 
-require('dotenv').config({ path: './config/.env' });
+const express = require("express");
+const createError = require("http-errors");
+const cors = require("cors");
+const path = require("path");
+const fs = require("fs");
 
-
-require('./config/db');
-
-// Express
-const express = require('express');
 const app = express();
-const createError = require('http-errors');
 
-app.use(require('body-parser').json());
-app.use(require('cors')({ credentials: true, origin: process.env.LOCAL_HOST }));
 
-// Routers
-app.use('/products', require('./routes/products'));
+const uploadDir = path.join(__dirname, "uploads");
+if (!fs.existsSync(uploadDir)) {
+    fs.mkdirSync(uploadDir, { recursive: true });
+}
 
-// Port
-const PORT = process.env.SERVER_PORT;
+app.use(express.json());
+app.use(cors({ credentials: true, origin: process.env.LOCAL_HOST }));
 
-// Start Server
-app.listen(PORT, () => {
-    console.log(`Connected to port ${PORT}`);
-});
 
-// Error 404
+app.use("/uploads", express.static(uploadDir));
+app.use("/products", require("./routes/products"));
+app.use("/users", require("./routes/users"));
+
+
 app.use((req, res, next) => {
     next(createError(404));
 });
 
 
+app.use((err, req, res, next) => {
+    console.error("Error:", err.message);
+    res.status(err.status || 500).json({ errorMessage: err.message || "Server error." });
+});
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
+const PORT = process.env.SERVER_PORT || 4000;
+app.listen(PORT, () => {
+    console.log(`Connected to port ${PORT}`);
+});
