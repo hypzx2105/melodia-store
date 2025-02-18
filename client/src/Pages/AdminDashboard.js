@@ -15,7 +15,7 @@ export default class AdminDashboard extends Component {
     }
 
     componentDidMount() {
-        const role = Number(sessionStorage.getItem("role"));
+        const role = Number(localStorage.getItem("role"));
         if (role !== 2) {
             this.setState({ redirect: true });
             return;
