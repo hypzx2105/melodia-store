@@ -9,11 +9,9 @@ const { validateUserRegistration } = require("../middleware/validationMiddleware
 
 const router = express.Router();
 const privateKey = fs.readFileSync(path.join(__dirname, "../config/jwt_private_key.pem"), "utf8");
-
-
 const uploadDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadDir)) {
-    fs.mkdirSync(uploadDir, { recursive: true });
+    fs.mkdirSync(uploadDir, { recursive:true});
 }
 
 

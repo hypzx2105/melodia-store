@@ -1,6 +1,6 @@
 import React, {Component} from "react"
 
-export default class SearchInstruments extends Component {
+export default class SearchProducts extends Component {
     handleSearch = (e) => {
         this.props.onSearch(e.target.value)
     }

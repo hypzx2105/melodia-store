@@ -3,7 +3,7 @@ import axios from "axios";
 import { SERVER_HOST } from "../configClient/global_constants";
 import { Navigate } from "react-router-dom";
 import "../Styles/styles.scss";
-
+import "../Styles/login.scss";
 class LoginPage extends Component {
     state = {
         email: "",
