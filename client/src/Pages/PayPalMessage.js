@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Redirect, Link } from "react-router-dom";
+import { Navigate, Link, useParams } from "react-router-dom";
 
 export default class PayPalMessage extends Component {
     static messageType = {
@@ -10,10 +10,8 @@ export default class PayPalMessage extends Component {
 
     constructor(props) {
         super(props);
-
         this.state = {
             redirectToProductPage: false,
-            buttonType: "error-button",
             heading: "",
             message: "",
             messageClass: ""
@@ -21,49 +19,43 @@ export default class PayPalMessage extends Component {
     }
 
     componentDidMount() {
-        const { messageType, payPalPaymentID } = this.props.match.params;
+        const params = this.props.params || {};
+        let messageClass = "error-message";
 
-        if (messageType === PayPalMessage.messageType.SUCCESS) {
+        if (params.messageType === PayPalMessage.messageType.SUCCESS) {
             this.setState({
                 heading: "PayPal Transaction Confirmation",
-                message: `Your PayPal transaction was successful!`,
-                buttonType: "success-button",
-                messageClass: "success-message",
-                payPalPaymentID
+                message: `Your PayPal transaction was successful. Transaction ID: ${params.payPalPaymentID || "N/A"}`,
+                messageClass: "success-message"
             });
-        } else if (messageType === PayPalMessage.messageType.CANCEL) {
+        } else if (params.messageType === PayPalMessage.messageType.CANCEL) {
             this.setState({
                 heading: "PayPal Transaction Cancelled",
-                message: "You cancelled your PayPal transaction. The transaction was not completed.",
-                messageClass: "error-message"
-            });
-        } else if (messageType === PayPalMessage.messageType.ERROR) {
-            this.setState({
-                heading: "PayPal Transaction Error",
-                message: "An error occurred during your PayPal transaction. Please try again.",
-                messageClass: "error-message"
+                message: "You cancelled your PayPal transaction.",
+                messageClass: messageClass
             });
         } else {
-            console.error("Invalid messageType provided.");
+            this.setState({
+                heading: "PayPal Transaction Error",
+                message: "An error occurred during the transaction.",
+                messageClass: messageClass
+            });
         }
     }
 
     render() {
         return (
             <div className={`payPalMessage ${this.state.messageClass}`}>
-                {this.state.redirectToProductPage && <Redirect to="/ProductPage" />}
-
+                {this.state.redirectToProductPage && <Navigate to="/products" replace />}
                 <h3>{this.state.heading}</h3>
                 <p>{this.state.message}</p>
-
-                {this.state.payPalPaymentID && (
-                    <p>Your PayPal payment confirmation is <span id="payPalPaymentID">{this.state.payPalPaymentID}</span></p>
-                )}
-
-                <p id="payPalPaymentIDButton">
-                    <Link className={this.state.buttonType} to="/ProductPage">Continue</Link>
-                </p>
+                <Link className="continue-button" to="/products">Continue Shopping</Link>
             </div>
         );
     }
+}
+
+export function WithParams(props) {
+    const params = useParams();
+    return <PayPalMessage {...props} params={params} />;
 }

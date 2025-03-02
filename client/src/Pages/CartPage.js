@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { SANDBOX_CLIENT_ID } from "../configClient";
+import { SANDBOX_CLIENT_ID } from "../configClient/global_constants";
 import "../Styles/cart.scss";
 
 class CartPage extends Component {

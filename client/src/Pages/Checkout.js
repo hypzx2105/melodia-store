@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { PayPalButton } from "react-paypal-button-v2";
-import { Navigate } from "react-router-dom"; // Add this import
+
 
 class Checkout extends Component {
-    // ... rest of the component
+
 
     render() {
         if (this.state.paymentCompleted) {
