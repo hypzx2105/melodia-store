@@ -38,7 +38,7 @@ When an order is saved, the server only takes the product ids and quantities fro
 
 The client is a React app with React Router. App.js keeps the cart and the logged in user in its state and in localStorage, and passes them to the pages. The pages use axios to call the server, and the styles are written in SCSS.
 
-The instrument pictures are from Microsoft's [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) (MIT licence).
+The product photos are free stock photos from [Pexels](https://www.pexels.com).
 
 ## How to run it
 
@@ -55,7 +55,7 @@ npm run seed
 npm start
 ```
 
-`npm run seed` adds 13 instruments to the database. Then start the client in a second terminal:
+`npm run seed` adds 12 products to the database. Then start the client in a second terminal:
 
 ```
 cd client
