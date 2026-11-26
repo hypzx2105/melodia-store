@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
-const path = require("path");
 const User = require("../models/UserSchema");
-require("dotenv").config({ path: path.join(__dirname, ".env") });
+require("./env");
 
 
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/eCommerce";
@@ -10,10 +9,10 @@ const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/eCommerce"
 
 async function connectDB() {
     try {
-        await mongoose.connect(MONGO_URI);
+        await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
         console.log(`Connected to MongoDB: ${MONGO_URI}`);
     } catch (error) {
-        console.error("MongoDB connection error:", error);
+        console.error(`Could not connect to MongoDB at ${MONGO_URI}. Make sure MongoDB is installed and running.`);
         process.exit(1);
     }
 }
