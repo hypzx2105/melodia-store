@@ -9,13 +9,10 @@ class CartPage extends Component {
     state = {
         showPayPal: false,
         orderID: "",
-        needLogin: false,
     };
 
     handleCheckout = () => {
-        if (!this.props.token) {
-            this.setState({ needLogin: true });
-        } else if (this.props.cart.length > 0) {
+        if (this.props.token && this.props.cart.length > 0) {
             this.setState({ showPayPal: true });
         }
     };
@@ -102,15 +99,13 @@ class CartPage extends Component {
                         </ul>
                         <div className="checkout-section">
                             <h3>Total: ${this.calculateTotal()}</h3>
-                            {!this.state.showPayPal && (
+                            {!this.state.showPayPal && (this.props.token ? (
                                 <button className="checkout-btn" onClick={this.handleCheckout}>
                                     Proceed to Checkout
                                 </button>
-                            )}
-
-                            {this.state.needLogin && !this.props.token && (
-                                <p className="login-note">Please <Link to="/login">log in</Link> to pay for your order.</p>
-                            )}
+                            ) : (
+                                <Link to="/login" className="checkout-btn">Log in to checkout</Link>
+                            ))}
 
                             {/* PayPal Button Section */}
                             {this.state.showPayPal && (

@@ -12,12 +12,17 @@ class ProductPage extends Component {
         minRating: 0,
         searchText: '',
         addedId: null,
+        loading: true,
+        loadError: false,
     };
 
     componentDidMount() {
         axios.get(`${SERVER_HOST}/products`)
-            .then((res) => this.setState({ products: res.data }))
-            .catch((err) => console.error('Error fetching products:', err));
+            .then((res) => this.setState({ products: res.data, loading: false }))
+            .catch((err) => {
+                console.error('Error fetching products:', err);
+                this.setState({ loading: false, loadError: true });
+            });
     }
 
     handleSortChange = (event) => {
@@ -80,7 +85,16 @@ class ProductPage extends Component {
                     </label>
                 </div>
 
-                {filteredProducts.length === 0 && <p className="no-results">No products match your search.</p>}
+                {this.state.loading && <p className="no-results">Loading products...</p>}
+                {this.state.loadError && (
+                    <p className="no-results">We couldn't load the products right now. Please try again in a moment.</p>
+                )}
+                {!this.state.loading && !this.state.loadError && this.state.products.length === 0 && (
+                    <p className="no-results">There are no products in the shop yet.</p>
+                )}
+                {this.state.products.length > 0 && filteredProducts.length === 0 && (
+                    <p className="no-results">No products match your search.</p>
+                )}
 
                 <div className="product-list">
                     {filteredProducts.map((product) => (

@@ -18,7 +18,7 @@ const SingleProduct = ({ addToCart }) => {
                 setLoading(false);
             })
             .catch((err) => {
-                setError(err.response?.data?.errorMessage || "Product not found");
+                setError(err.response ? (err.response.data?.errorMessage || "Product not found.") : "We couldn't load this product right now. Please try again in a moment.");
                 setLoading(false);
             });
     }, [id]);
