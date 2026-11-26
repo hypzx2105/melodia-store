@@ -47,7 +47,7 @@ You need two things installed:
 - [Node.js](https://nodejs.org) 18 or newer
 - [MongoDB Community Server](https://www.mongodb.com/try/download/community), running on the default port 27017. On Windows, leave "Install MongoD as a Service" ticked in the installer and it starts on its own with the computer.
 
-Then run these in the project folder:
+Then open a terminal and run:
 
 ```
 git clone https://github.com/hypzx2105/melodia-store.git
@@ -57,12 +57,22 @@ npm run seed
 npm run dev
 ```
 
-`npm install` installs the server and the client, `npm run seed` adds 12 products to the database and `npm run dev` starts both. The shop opens on http://localhost:3000 and the server runs on port 4000. The settings are in server/config/.env, which is created from .env.example the first time you run it.
+`npm install` installs the server and the client, `npm run seed` adds 12 products to the database and `npm run dev` starts both. The shop opens on http://localhost:3000 and the server runs on port 4000. Press Ctrl+C in the terminal to stop both.
 
-The admin login is admin@ecommerce.com with the password AdminPass123!, and you can change both in the .env file before the first start. To try a payment you need a PayPal sandbox buyer account.
+The settings are in server/config/.env, which is created from .env.example the first time you run it. The admin login is admin@ecommerce.com with the password AdminPass123!, and you can change both in the .env file before the first start. To try a payment you need a PayPal sandbox buyer account.
 
-If the shop says it couldn't load the products, look at the server output. "Could not connect to MongoDB" means MongoDB isn't installed or isn't running (the line under it says why).
+If you already cloned it before, get the latest version with:
 
-If it says "Something is already running on port 3000", the shop is still open in another terminal. Stop it with Ctrl+C there and run `npm run dev` again.
+```
+git pull
+npm install
+npm run dev
+```
+
+### If something doesn't work
+
+- **The shop says it couldn't load the products:** look at the server output. "Could not connect to MongoDB" means MongoDB isn't installed or isn't running, and the line under it says why. On Windows you can start it from Services (MongoDB Server).
+- **"Something is already running on port 3000" (or 4000):** the shop is still running in another terminal. Stop it with Ctrl+C there, or free the port with `npx kill-port 3000 4000`, then run `npm run dev` again.
+- **No products after a fresh install:** run `npm run seed` once more.
 
 Iker Arza, DkIT, BSc in Computing in Software Development
