@@ -47,8 +47,8 @@ You need Node.js 18 or newer and MongoDB running on your machine on the default 
 Start the server:
 
 ```
-git clone https://github.com/hypzx2105/eCommers.git
-cd eCommers
+git clone https://github.com/hypzx2105/melodia-store.git
+cd melodia-store
 npm install
 cp server/config/.env.example server/config/.env
 npm run seed
