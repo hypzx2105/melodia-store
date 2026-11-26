@@ -7,6 +7,15 @@ I made it with [violetdestiny](https://github.com/violetdestiny) as a college pr
 ![Home page](docs/home.png)
 ![Products page](docs/products.png)
 
+| Part | What I used |
+|---|---|
+| Front end | React 18, React Router, axios, SCSS |
+| Back end | Node.js, Express, Mongoose |
+| Database | MongoDB |
+| Security | bcryptjs password hashing, JWT signed with RS256, role based routes, express-validator |
+| Payments | PayPal JavaScript SDK in sandbox mode |
+| Uploads | multer for product images and profile pictures |
+
 ## What the app does
 
 The home page has a slider with some of the instruments, and each one links to its product page. On the products page you can search by name, sort by price or rating and filter by minimum rating. Each product has its own page with the description, colour and features.
