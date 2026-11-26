@@ -42,27 +42,25 @@ The product photos are free stock photos from [Pexels](https://www.pexels.com).
 
 ## How to run it
 
-You need Node.js 18 or newer and MongoDB running on your machine on the default port.
+You need two things installed:
 
-Start the server:
+- [Node.js](https://nodejs.org) 18 or newer
+- [MongoDB Community Server](https://www.mongodb.com/try/download/community), running on the default port 27017. On Windows, leave "Install MongoD as a Service" ticked in the installer and it starts on its own with the computer.
+
+Then run these in the project folder:
 
 ```
 git clone https://github.com/hypzx2105/melodia-store.git
 cd melodia-store
 npm install
-cp server/config/.env.example server/config/.env
 npm run seed
-npm start
+npm run dev
 ```
 
-`npm run seed` adds 12 products to the database. Then start the client in a second terminal:
+`npm install` installs the server and the client, `npm run seed` adds 12 products to the database and `npm run dev` starts both. The shop opens on http://localhost:3000 and the server runs on port 4000. The settings are in server/config/.env, which is created from .env.example the first time you run it.
 
-```
-cd client
-npm install
-npm start
-```
+The admin login is admin@ecommerce.com with the password AdminPass123!, and you can change both in the .env file before the first start. To try a payment you need a PayPal sandbox buyer account.
 
-The shop opens on http://localhost:3000 and the server runs on port 4000. The admin login is admin@ecommerce.com with the password AdminPass123!, and you can change both in the .env file before the first start. To try a payment you need a PayPal sandbox buyer account.
+If the shop says it couldn't load the products, look at the server output. "Could not connect to MongoDB" means MongoDB isn't installed or isn't running.
 
 Iker Arza, DkIT, BSc in Computing in Software Development
