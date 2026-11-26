@@ -61,6 +61,8 @@ npm run dev
 
 The admin login is admin@ecommerce.com with the password AdminPass123!, and you can change both in the .env file before the first start. To try a payment you need a PayPal sandbox buyer account.
 
-If the shop says it couldn't load the products, look at the server output. "Could not connect to MongoDB" means MongoDB isn't installed or isn't running.
+If the shop says it couldn't load the products, look at the server output. "Could not connect to MongoDB" means MongoDB isn't installed or isn't running (the line under it says why).
+
+If it says "Something is already running on port 3000", the shop is still open in another terminal. Stop it with Ctrl+C there and run `npm run dev` again.
 
 Iker Arza, DkIT, BSc in Computing in Software Development

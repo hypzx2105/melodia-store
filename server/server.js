@@ -1,6 +1,6 @@
 const path = require("path");
 require("./config/env");
-require("./config/db");
+const connectDB = require("./config/db");
 
 const express = require("express");
 const createError = require("http-errors");
@@ -41,3 +41,6 @@ const PORT = process.env.SERVER_PORT || 4000;
 app.listen(PORT, () => {
     console.log(`Connected to port ${PORT}`);
 });
+
+// connect last, once everything above has loaded
+connectDB();

@@ -120,6 +120,7 @@ async function seed() {
         await mongoose.connect(uri, { serverSelectionTimeoutMS: 5000 });
     } catch (err) {
         console.error(`Could not connect to MongoDB at ${uri}. Make sure MongoDB is installed and running.`);
+        console.error(`Reason: ${err.message}`);
         process.exit(1);
     }
     await Product.deleteMany({});

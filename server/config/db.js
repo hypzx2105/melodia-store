@@ -7,22 +7,26 @@ require("./env");
 const MONGO_URI = process.env.MONGO_URI || "mongodb://127.0.0.1:27017/eCommerce";
 
 
-async function connectDB() {
+// tries a few times before giving up, the first start on a slow laptop can take a while
+async function connectDB(attempt = 1) {
     try {
-        await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 5000 });
+        await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 10000 });
         console.log(`Connected to MongoDB: ${MONGO_URI}`);
     } catch (error) {
+        if (attempt < 3) {
+            console.log(`MongoDB not ready yet, trying again (${attempt}/3)...`);
+            return setTimeout(() => connectDB(attempt + 1), 2000);
+        }
         console.error(`Could not connect to MongoDB at ${MONGO_URI}. Make sure MongoDB is installed and running.`);
+        console.error(`Reason: ${error.message}`);
         process.exit(1);
     }
 }
 
-connectDB();
-
 const db = mongoose.connection;
 
 db.on("error", (error) => {
-    console.error("MongoDB connection error:", error);
+    console.error("MongoDB connection error:", error.message);
 });
 
 db.once("open", async () => {
@@ -45,5 +49,5 @@ db.once("open", async () => {
     }
 });
 
-module.exports = db;
+module.exports = connectDB;
 
