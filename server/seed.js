@@ -7,12 +7,30 @@ const Product = require("./models/Product");
 const products = [
     {
         name: "Electric Guitar",
-        price: 649,
-        description: "Solid body electric guitar with a fast neck, great for rock, blues and jazz.",
+        price: 849,
+        description: "Semi hollow electric guitar in cherry red with a warm, full tone for blues, jazz and rock.",
         image: "/images/electric-guitar.jpg",
-        color: "Red",
-        rating: 4.7,
-        features: ["Solid alder body", "22 frets", "Two humbucker pickups", "Comes with a gig bag"]
+        color: "Cherry Red",
+        rating: 4.8,
+        features: ["Semi hollow maple body", "Two humbucker pickups", "22 frets", "Hard case included"]
+    },
+    {
+        name: "Acoustic Guitar",
+        price: 249,
+        description: "Classic acoustic guitar with a bright, clear sound. A great first guitar.",
+        image: "/images/acoustic-guitar.jpg",
+        color: "Natural",
+        rating: 4.5,
+        features: ["Spruce top", "Steel strings", "Guitar stand included"]
+    },
+    {
+        name: "Ukulele",
+        price: 59,
+        description: "Soprano ukulele, easy to learn and fun to play. Available in blue, purple and red.",
+        image: "/images/ukulele.jpg",
+        color: "Blue, Purple, Red",
+        rating: 4.2,
+        features: ["Soprano size", "Nylon strings", "Gig bag included"]
     },
     {
         name: "Violin",
@@ -20,35 +38,17 @@ const products = [
         description: "Full size violin with a warm, rich tone, ready to play for students and orchestra players.",
         image: "/images/violin.jpg",
         color: "Brown",
-        rating: 4.8,
+        rating: 4.7,
         features: ["Spruce top and maple back", "Full size 4/4", "Bow and rosin included", "Hard case"]
     },
     {
         name: "Flute",
-        price: 219,
-        description: "Wooden flute with a soft, clear sound for classical and folk music.",
+        price: 429,
+        description: "Silver plated concert flute with a clear, bright sound for students and orchestras.",
         image: "/images/flute.jpg",
-        color: "Natural",
-        rating: 4.3,
-        features: ["Hand finished wood", "Six finger holes", "Cleaning rod included"]
-    },
-    {
-        name: "Digital Piano",
-        price: 499,
-        description: "88 key digital piano with weighted keys and built in speakers.",
-        image: "/images/keyboard.jpg",
-        color: "White",
-        rating: 4.6,
-        features: ["88 weighted keys", "Headphone output", "Sustain pedal included", "USB MIDI"]
-    },
-    {
-        name: "Snare Drum",
-        price: 179,
-        description: "14 inch snare drum with a bright, punchy sound for any kit.",
-        image: "/images/snare-drum.jpg",
-        color: "Red",
-        rating: 4.2,
-        features: ["14 x 5.5 inch shell", "Steel snare wires", "Sticks included"]
+        color: "Silver",
+        rating: 4.4,
+        features: ["Silver plated body", "Closed hole keys", "Case and cleaning rod"]
     },
     {
         name: "Alto Saxophone",
@@ -69,57 +69,48 @@ const products = [
         features: ["Bb key", "Monel valves", "7C mouthpiece included"]
     },
     {
-        name: "Banjo",
-        price: 329,
-        description: "Five string banjo for bluegrass and folk music.",
-        image: "/images/banjo.jpg",
-        color: "Brown",
+        name: "Digital Piano",
+        price: 499,
+        description: "88 key digital piano with weighted keys, built in speakers and a music stand.",
+        image: "/images/digital-piano.jpg",
+        color: "Black",
+        rating: 4.6,
+        features: ["88 weighted keys", "Headphone output", "Sustain pedal included", "USB MIDI"]
+    },
+    {
+        name: "Drum Kit",
+        price: 699,
+        description: "Five piece acoustic drum kit with cymbals and hardware, ready for the stage.",
+        image: "/images/drum-kit.jpg",
+        color: "White",
+        rating: 4.3,
+        features: ["Bass drum, snare and three toms", "Hi hat, crash and ride cymbals", "Throne and sticks included"]
+    },
+    {
+        name: "Guitar Amplifier",
+        price: 299,
+        description: "30 watt combo amp with a vintage clean sound and plenty of volume for practice and gigs.",
+        image: "/images/amplifier.jpg",
+        color: "Black",
         rating: 3.9,
-        features: ["Five strings", "Mahogany resonator", "Adjustable bridge"]
-    },
-    {
-        name: "Accordion",
-        price: 799,
-        description: "Piano accordion with 26 keys and 48 bass buttons.",
-        image: "/images/accordion.jpg",
-        color: "Pink",
-        rating: 4.0,
-        features: ["26 treble keys", "48 bass buttons", "Shoulder straps included"]
-    },
-    {
-        name: "Djembe",
-        price: 139,
-        description: "Hand carved djembe with a goatskin head and deep bass.",
-        image: "/images/djembe.jpg",
-        color: "Brown",
-        rating: 4.4,
-        features: ["Hand carved wood", "Goatskin head", "Rope tuning"]
-    },
-    {
-        name: "Maracas",
-        price: 25,
-        description: "A pair of colourful maracas for percussion and kids.",
-        image: "/images/maracas.jpg",
-        color: "Multicolour",
-        rating: 3.6,
-        features: ["Pair of two", "Wooden handles"]
+        features: ["30 watts", "10 inch speaker", "Volume, treble and bass controls"]
     },
     {
         name: "Studio Microphone",
         price: 149,
         description: "Condenser microphone for recording vocals and instruments at home.",
-        image: "/images/studio-microphone.jpg",
-        color: "Silver",
+        image: "/images/microphone.jpg",
+        color: "Black",
         rating: 4.6,
-        features: ["Cardioid pattern", "XLR output", "Desk stand included"]
+        features: ["Cardioid pattern", "XLR output", "Shock mount and pop filter"]
     },
     {
         name: "Studio Headphones",
         price: 99,
         description: "Closed back headphones for practice, mixing and recording.",
         image: "/images/headphones.jpg",
-        color: "White",
-        rating: 4.3,
+        color: "Black",
+        rating: 3.6,
         features: ["Closed back", "3 m cable", "Foldable"]
     }
 ];
