@@ -1,18 +1,21 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
+import axios from "axios";
 import { PayPalScriptProvider, PayPalButtons } from "@paypal/react-paypal-js";
-import { SANDBOX_CLIENT_ID } from "../configClient/global_constants";
+import { SANDBOX_CLIENT_ID, SERVER_HOST, imageUrl, authHeader } from "../configClient/global_constants";
 import "../Styles/cart.scss";
 
 class CartPage extends Component {
     state = {
         showPayPal: false,
         orderID: "",
+        needLogin: false,
     };
 
     handleCheckout = () => {
-        if (this.props.cart.length === 0) {
-            alert("Your cart is empty. Add some products before checking out!");
-        } else {
+        if (!this.props.token) {
+            this.setState({ needLogin: true });
+        } else if (this.props.cart.length > 0) {
             this.setState({ showPayPal: true });
         }
     };
@@ -32,8 +35,14 @@ class CartPage extends Component {
 
     handleApprove = (data, actions) => {
         return actions.order.capture().then(details => {
-            console.log("Transaction completed by", details.payer.name.given_name);
-            window.location.href = `/paypalmessage/success/${details.id}`;
+            const items = this.props.cart.map(item => ({ _id: item._id, quantity: item.quantity }));
+
+            return axios.post(`${SERVER_HOST}/orders`, { items, payPalPaymentID: details.id }, authHeader())
+                .catch(err => console.error("Order was paid but could not be saved:", err))
+                .then(() => {
+                    this.props.clearCart();
+                    window.location.href = `/paypalmessage/success/${details.id}`;
+                });
         });
     };
 
@@ -53,13 +62,13 @@ class CartPage extends Component {
             <div className="cart-container">
                 <h1>Shopping Cart</h1>
                 {cart.length === 0 ? (
-                    <p className="empty-cart-message">Your cart is empty.</p>
+                    <p className="empty-cart-message">Your cart is empty. <Link to="/products">Browse products</Link></p>
                 ) : (
                     <>
                         <ul>
                             {cart.map((item) => (
                                 <li key={item._id} className="cart-item">
-                                    <img src={item.image} alt={item.name} className="cart-item-image"/>
+                                    <img src={imageUrl(item.image)} alt={item.name} className="cart-item-image"/>
                                     <div>
                                         <h3>{item.name}</h3>
                                         <p>${item.price}</p>
@@ -93,16 +102,23 @@ class CartPage extends Component {
                         </ul>
                         <div className="checkout-section">
                             <h3>Total: ${this.calculateTotal()}</h3>
-                            <button className="checkout-btn" onClick={this.handleCheckout}>
-                                Proceed to Checkout
-                            </button>
+                            {!this.state.showPayPal && (
+                                <button className="checkout-btn" onClick={this.handleCheckout}>
+                                    Proceed to Checkout
+                                </button>
+                            )}
+
+                            {this.state.needLogin && !this.props.token && (
+                                <p className="login-note">Please <Link to="/login">log in</Link> to pay for your order.</p>
+                            )}
 
                             {/* PayPal Button Section */}
                             {this.state.showPayPal && (
-                                <PayPalScriptProvider options={{ "client-id": SANDBOX_CLIENT_ID }}>
+                                <PayPalScriptProvider options={{ clientId: SANDBOX_CLIENT_ID, currency: "USD" }}>
                                     <PayPalButtons
                                         createOrder={this.handleCreateOrder}
                                         onApprove={this.handleApprove}
+                                        onCancel={() => (window.location.href = "/paypalmessage/cancel")}
                                         onError={this.handleError}
                                     />
                                 </PayPalScriptProvider>

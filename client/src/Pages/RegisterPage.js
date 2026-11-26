@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { SERVER_HOST } from "../configClient/global_constants";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import "../Styles/styles.scss";
 import "../Styles/register.scss"; 
 class RegisterPage extends Component {
@@ -49,17 +49,20 @@ class RegisterPage extends Component {
         }
 
         return (
-            <div className="register-container">
+            <div className="registration-container">
                 <h1>New User Registration</h1>
                 {this.state.errorMessage && <p className="error-message">{this.state.errorMessage}</p>}
                 <form onSubmit={this.handleSubmit}>
                     <input type="text" name="name" placeholder="Name" onChange={this.handleInputChange} required />
                     <input type="email" name="email" placeholder="Email" onChange={this.handleInputChange} required />
-                    <input type="password" name="password" placeholder="Password" onChange={this.handleInputChange} required />
-                    <input type="file" name="profilePic" onChange={this.handleFileChange} accept="image/*" />
+                    <input type="password" name="password" placeholder="Password (8+ characters, upper and lower case and a number)" onChange={this.handleInputChange} required />
+                    <label className="file-label">
+                        Profile picture (optional)
+                        <input type="file" name="profilePic" onChange={this.handleFileChange} accept="image/*" />
+                    </label>
                     <button type="submit">Register</button>
                 </form>
-                <p>Already have an account? <a href="/login">Login</a></p>
+                <p>Already have an account? <Link to="/login">Login</Link></p>
             </div>
         );
     }

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import axios from "axios";
 import { SERVER_HOST } from "../configClient/global_constants";
-import { Navigate } from "react-router-dom";
+import { Navigate, Link } from "react-router-dom";
 import "../Styles/styles.scss";
 import "../Styles/login.scss";
 class LoginPage extends Component {
@@ -30,7 +30,7 @@ class LoginPage extends Component {
             localStorage.setItem("role", response.data.role);
             localStorage.setItem("name", response.data.name);
             localStorage.setItem("email", response.data.email);
-            localStorage.setItem("profilePic", response.data.profilePic || "");
+            localStorage.setItem("profilePic", response.data.profilePic ? `${SERVER_HOST}${response.data.profilePic}` : "");
 
             this.props.updateUserState();
             this.setState({ redirect: true });
@@ -53,7 +53,7 @@ class LoginPage extends Component {
                     <input type="password" name="password" placeholder="Password" onChange={this.handleInputChange} required />
                     <button type="submit">Login</button>
                 </form>
-                <p>Don't have an account? <a href="/register">Register</a></p>
+                <p>Don't have an account? <Link to="/register">Register</Link></p>
             </div>
         );
     }

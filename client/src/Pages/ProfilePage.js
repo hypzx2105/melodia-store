@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import axios from "axios";
-import { SERVER_HOST } from "../configClient/global_constants.js";
+import { SERVER_HOST, authHeader } from "../configClient/global_constants.js";
 import "../Styles/profile.scss";
 
 class ProfilePage extends Component {
@@ -10,6 +10,7 @@ class ProfilePage extends Component {
             profilePic: localStorage.getItem("profilePic") || "",
             name: props.user.name || "",
             email: props.user.email || "",
+            orders: [],
         };
     }
 
@@ -17,7 +18,7 @@ class ProfilePage extends Component {
         const userId = localStorage.getItem("userId");
 
         if (userId) {
-            axios.get(`${SERVER_HOST}/users/profile/${userId}`)
+            axios.get(`${SERVER_HOST}/users/profile/${userId}`, authHeader())
                 .then(response => {
                     if (response.data.profilePic) {
                         const profileImageUrl = `${SERVER_HOST}${response.data.profilePic}`;
@@ -26,26 +27,23 @@ class ProfilePage extends Component {
                     }
                 })
                 .catch(err => console.error("Error fetching profile data:", err));
+
+            axios.get(`${SERVER_HOST}/orders/mine`, authHeader())
+                .then(response => this.setState({ orders: response.data }))
+                .catch(err => console.error("Error fetching orders:", err));
         }
     }
 
     handleImageUpload = async (event) => {
         const file = event.target.files[0];
-        const userId = localStorage.getItem("userId");
-
-        if (!userId || userId === "null") {
-            console.error("User ID is missing. Cannot upload image.");
-            return;
-        }
 
         if (file) {
             const formData = new FormData();
             formData.append("image", file);
-            formData.append("userId", userId);
 
             try {
                 const response = await axios.post(`${SERVER_HOST}/users/upload-profile-pic`, formData, {
-                    headers: { "Content-Type": "multipart/form-data" },
+                    headers: { "Content-Type": "multipart/form-data", Authorization: localStorage.getItem("token") },
                 });
 
                 if (response.data.profilePic) {
@@ -61,7 +59,7 @@ class ProfilePage extends Component {
     };
 
     render() {
-        const { profilePic, name, email } = this.state;
+        const { profilePic, name, email, orders } = this.state;
 
         return (
             <div className="profile-container">
@@ -74,7 +72,32 @@ class ProfilePage extends Component {
                     )}
                     <h2>{name}</h2>
                     <p>Email: {email}</p>
-                    <input type="file" onChange={this.handleImageUpload} className="upload-btn" />
+                    <label className="upload-btn">
+                        Change picture
+                        <input type="file" accept="image/*" onChange={this.handleImageUpload} />
+                    </label>
+                </div>
+
+                <div className="orders">
+                    <h2>My Orders</h2>
+                    {orders.length === 0 ? (
+                        <p>You haven't ordered anything yet.</p>
+                    ) : (
+                        orders.map(order => (
+                            <div key={order._id} className="order">
+                                <div className="order-top">
+                                    <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+                                    <span>PayPal ID: {order.payPalPaymentID}</span>
+                                    <strong>${order.total.toFixed(2)}</strong>
+                                </div>
+                                <ul>
+                                    {order.items.map((item, index) => (
+                                        <li key={index}>{item.quantity} x {item.name} (${item.price})</li>
+                                    ))}
+                                </ul>
+                            </div>
+                        ))
+                    )}
                 </div>
             </div>
         );

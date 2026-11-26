@@ -1,58 +1,61 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
+import axios from "axios";
+import { SERVER_HOST, imageUrl } from "../configClient/global_constants";
+import "../Styles/products.scss";
 
-const SingleProduct = () => {
+const SingleProduct = ({ addToCart }) => {
     const { id } = useParams();
     const [product, setProduct] = useState(null);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const [added, setAdded] = useState(false);
 
     useEffect(() => {
-        console.log("Fetching product with ID:", id);
-        fetch(`http://localhost:4000/products/${id}`)
+        axios.get(`${SERVER_HOST}/products/${id}`)
             .then((res) => {
-                console.log("Response status:", res.status);
-                console.log("Response headers:", res.headers);
-                if (!res.ok) {
-                    throw new Error("Product not found");
-                }
-                return res.json();
-            })
-            .then((data) => {
-                console.log("Product data:", data);
-                if (!data || Object.keys(data).length === 0) {
-                    throw new Error("Product data is empty");
-                }
-                setProduct(data);
+                setProduct(res.data);
                 setLoading(false);
             })
             .catch((err) => {
-                console.error("Error fetching product:", err); // Debug: Log the error
-                setError(err.message || "An unexpected error occurred");
+                setError(err.response?.data?.errorMessage || "Product not found");
                 setLoading(false);
             });
     }, [id]);
 
-    if (loading) return <div>Loading product...</div>;
-    if (error) return <div>{error}</div>;
-    if (!product || Object.keys(product).length === 0) return <div>Product not found</div>;
+    const handleAddToCart = () => {
+        addToCart(product);
+        setAdded(true);
+    };
+
+    if (loading) return <div className="product-details-page">Loading product...</div>;
+    if (error) return <div className="product-details-page">{error}</div>;
 
     return (
         <div className="product-details-page">
-            <h1>{product.name}</h1>
-            <img src={product.image} alt={product.name} />
-            <p>{product.description}</p>
-            <p><strong>Price:</strong> ${product.price}</p>
-            <h3>Features:</h3>
-            {product.features && product.features.length > 0 ? (
-                <ul>
-                    {product.features.map((feature, index) => (
-                        <li key={index}>{feature}</li>
-                    ))}
-                </ul>
-            ) : (
-                <p>No features listed.</p>
-            )}
+            <Link to="/products" className="back-link">Back to products</Link>
+            <div className="product-details">
+                <img src={imageUrl(product.image)} alt={product.name}/>
+                <div className="product-info">
+                    <h1>{product.name}</h1>
+                    <div className="rating">⭐ {product.rating} / 5</div>
+                    <p className="price">${product.price}</p>
+                    <p>{product.description}</p>
+                    {product.color && <p><strong>Colour:</strong> {product.color}</p>}
+                    <h3>Features:</h3>
+                    {product.features && product.features.length > 0 ? (
+                        <ul>
+                            {product.features.map((feature, index) => (
+                                <li key={index}>{feature}</li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>No features listed.</p>
+                    )}
+                    <button onClick={handleAddToCart}>{added ? "Added to cart" : "Add to Cart"}</button>
+                    {added && <Link to="/cart" className="go-to-cart">Go to cart</Link>}
+                </div>
+            </div>
         </div>
     );
 };

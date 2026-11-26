@@ -9,7 +9,7 @@ export default class SearchProducts extends Component {
         return (
 
             <div className="search-container">
-                <input type="text" placeholder="Search..." className="search-input" onChange={this.handleSearch}/>
+                <input type="text" placeholder="Search instruments..." className="search-input" onChange={this.handleSearch}/>
 
             </div>
         )

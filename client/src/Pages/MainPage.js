@@ -1,13 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "../Styles/main_pageCSS.scss";
 
-import electricGuitarImage from "../Images/electric guitar.jpeg";
-import violinImage from "../Images/violen.png";
-import fluteImage from "../Images/flute.jpeg";
-import pianoImage from "../Images/saxaphone.jpeg";
-import drumsImage from "../Images/drums.jpeg";
-import saxophoneImage from "../Images/saxaphone.jpeg";
+import { FaArrowLeft, FaArrowRight } from "react-icons/fa";
+import { SERVER_HOST } from "../configClient/global_constants";
+
+import electricGuitarImage from "../Images/electric-guitar-banner.jpg";
+import violinImage from "../Images/violin-banner.jpg";
+import fluteImage from "../Images/flute-banner.jpg";
+import pianoImage from "../Images/keyboard-banner.jpg";
+import drumsImage from "../Images/snare-drum-banner.jpg";
+import saxophoneImage from "../Images/saxophone-banner.jpg";
 
 const MainPage = () => {
     const [slides, setSlides] = useState([
@@ -31,23 +35,25 @@ const MainPage = () => {
         },
         {
             id: 4,
-            name: "Piano",
+            name: "Digital Piano",
             image: pianoImage,
             description: "A timeless instrument with a wide range of notes. Perfect for composing, performing, and practicing.",
         },
         {
             id: 5,
-            name: "Drums",
+            name: "Snare Drum",
             image: drumsImage,
             description: "The heartbeat of any band. Provides rhythm and energy to all genres of music.",
         },
         {
             id: 6,
-            name: "Saxophone",
+            name: "Alto Saxophone",
             image: saxophoneImage,
             description: "A smooth and soulful wind instrument. Popular in jazz, blues, and pop music.",
         },
     ]);
+
+    const [productIds, setProductIds] = useState({});
 
     const handleNext = () => {
         setSlides((prevSlides) => {
@@ -68,6 +74,16 @@ const MainPage = () => {
     };
 
     useEffect(() => {
+        axios.get(`${SERVER_HOST}/products`)
+            .then((res) => {
+                const ids = {};
+                res.data.forEach((product) => (ids[product.name] = product._id));
+                setProductIds(ids);
+            })
+            .catch((err) => console.error("Error fetching products:", err));
+    }, []);
+
+    useEffect(() => {
         const interval = setInterval(() => {
             handleNext();
         }, 3000);
@@ -80,6 +96,7 @@ const MainPage = () => {
             <div className="welcome">
                 <h1>Welcome to Melodia Store</h1>
                 <p>Browse through our amazing collection of musical instruments!</p>
+                <Link to="/products" className="browse-button">Browse Products</Link>
             </div>
 
             <div className="container">
@@ -93,7 +110,7 @@ const MainPage = () => {
                             <div className="content">
                                 <div className="name">{slide.name}</div>
                                 <div className="des">{slide.description}</div>
-                                <Link to={`/product/${slide.id}`}>
+                                <Link to={productIds[slide.name] ? `/product/${productIds[slide.name]}` : "/products"}>
                                     <button>See More</button>
                                 </Link>
                             </div>
@@ -103,10 +120,10 @@ const MainPage = () => {
 
                 <div className="button">
                     <button className="prev" onClick={handlePrev}>
-                        <i className="fa-solid fa-arrow-left"></i>
+                        <FaArrowLeft/>
                     </button>
                     <button className="next" onClick={handleNext}>
-                        <i className="fa-solid fa-arrow-right"></i>
+                        <FaArrowRight/>
                     </button>
                 </div>
             </div>

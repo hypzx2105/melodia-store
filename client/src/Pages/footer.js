@@ -1,29 +1,21 @@
 // Footer.js
 
 import React from 'react'
+import { Link } from "react-router-dom";
 
 const Footer = () => {
     return (
         <footer>
-            <div>
-                <div className="sponsors">
-                    <img src="./photos/aa.png" alt=""/>
-                    <img src="./photos/bdf.jpg" alt=""/>
-                    <img src="./photos/tally.jpg" alt=""/>
-                </div>
-                <div className="additional-links">
-               <ul>
-
-
-
-               </ul>
-                </div>
-
+            <div className="additional-links">
+                <ul>
+                    <li><Link to="/">Home</Link></li>
+                    <li><Link to="/products">Products</Link></li>
+                    <li><Link to="/cart">Cart</Link></li>
+                </ul>
             </div>
             <div className="copyright">
                 <hr/>
-                <p>Copyright 2024 </p>
-
+                <p>Copyright 2025 Melodia Store</p>
             </div>
         </footer>
     )
