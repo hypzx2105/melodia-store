@@ -12,18 +12,18 @@ body {
 
 .welcome {
   text-align: center;
-  padding: 20px;
-  background-color: #f9f9f9;
+  padding: 70px 20px;
+  background: linear-gradient(rgba(0, 0, 0, 0.55), rgba(0, 0, 0, 0.55)), url("../Images/hero.jpg") center / cover;
 
   h1 {
-    font-size: 2.5rem;
-    color: #333;
+    font-size: 2.8rem;
+    color: white;
     margin-bottom: 10px;
   }
 
   p {
     font-size: 1.2rem;
-    color: #666;
+    color: #e6e6e6;
     margin-bottom: 20px;
   }
 
@@ -68,7 +68,7 @@ body {
     transform: translate(0, -50%);
     border-radius: 20px;
     box-shadow: 0 30px 50px #505050;
-    background-position: 10% 50%;
+    background-position: 50% 50%;
     background-size: cover;
     transition: 0.5s;
 
@@ -102,7 +102,9 @@ body {
 
     .content {
       position: absolute;
-      top: 60px;
+      z-index: 1;
+      top: 50%;
+      transform: translate(0, -50%);
       left: 100px;
       width: 340px;
       text-align: left;

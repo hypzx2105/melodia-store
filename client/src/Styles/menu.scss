@@ -37,10 +37,18 @@
   }
 
   .logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
     font-weight: bold;
-    font-size: 1.4rem;
-    color: #FF6F61;
+    font-size: 1.35rem;
+    color: white;
     margin-right: 15px;
+
+    img {
+      width: 28px;
+      height: 28px;
+    }
   }
 
   .user-info {

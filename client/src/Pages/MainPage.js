@@ -8,10 +8,10 @@ import { SERVER_HOST } from "../configClient/global_constants";
 
 import electricGuitarImage from "../Images/electric-guitar-banner.jpg";
 import violinImage from "../Images/violin-banner.jpg";
-import fluteImage from "../Images/flute-banner.jpg";
-import pianoImage from "../Images/keyboard-banner.jpg";
-import drumsImage from "../Images/snare-drum-banner.jpg";
 import saxophoneImage from "../Images/saxophone-banner.jpg";
+import drumsImage from "../Images/drums-banner.jpg";
+import pianoImage from "../Images/piano-banner.jpg";
+import microphoneImage from "../Images/microphone-banner.jpg";
 
 const MainPage = () => {
     const [slides, setSlides] = useState([
@@ -29,27 +29,27 @@ const MainPage = () => {
         },
         {
             id: 3,
-            name: "Flute",
-            image: fluteImage,
-            description: "A woodwind instrument that produces a soft, melodic sound. Great for classical and contemporary music.",
+            name: "Alto Saxophone",
+            image: saxophoneImage,
+            description: "A smooth and soulful wind instrument. Popular in jazz, blues, and pop music.",
         },
         {
             id: 4,
+            name: "Drum Kit",
+            image: drumsImage,
+            description: "The heartbeat of any band. Provides rhythm and energy to all genres of music.",
+        },
+        {
+            id: 5,
             name: "Digital Piano",
             image: pianoImage,
             description: "A timeless instrument with a wide range of notes. Perfect for composing, performing, and practicing.",
         },
         {
-            id: 5,
-            name: "Snare Drum",
-            image: drumsImage,
-            description: "The heartbeat of any band. Provides rhythm and energy to all genres of music.",
-        },
-        {
             id: 6,
-            name: "Alto Saxophone",
-            image: saxophoneImage,
-            description: "A smooth and soulful wind instrument. Popular in jazz, blues, and pop music.",
+            name: "Studio Microphone",
+            image: microphoneImage,
+            description: "Record vocals and instruments at home with a clear, professional sound.",
         },
     ]);
 

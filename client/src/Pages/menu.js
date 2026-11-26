@@ -1,6 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import "../Styles/menu.scss";
+import logo from "../Images/logo.svg";
 
 const Menu = ({ cart, role, token, name, logout }) => {
     const itemsInCart = cart.reduce((total, item) => total + item.quantity, 0);
@@ -8,7 +9,7 @@ const Menu = ({ cart, role, token, name, logout }) => {
     return (
         <nav className="navbar">
             <div className="nav-left">
-                <Link to="/" className="logo">Melodia</Link>
+                <Link to="/" className="logo"><img src={logo} alt=""/> Melodia</Link>
                 <Link to="/" className="mainbut">Main</Link>
                 <Link to="/products" className="productbut">Browse Products</Link>
                 <Link to="/cart" className="cartbut">Cart ({itemsInCart})</Link>
