@@ -1,0 +1,6 @@
+node_modules/
+.idea/
+server/config/.env
+server/config/jwt_private_key.pem
+server/uploads/
+client/build/

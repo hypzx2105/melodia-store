@@ -5,10 +5,13 @@ const fs = require("fs");
 const path = require("path");
 const multer = require("multer");
 const User = require("../models/UserSchema");
+const { privateKey } = require("../config/jwtKey");
+const auth = require("../middleware/authMiddleware");
+const checkRole = require("../middleware/roleMiddleware");
 const { validateUserRegistration } = require("../middleware/validationMiddleware");
 
 const router = express.Router();
-const privateKey = fs.readFileSync(path.join(__dirname, "../config/jwt_private_key.pem"), "utf8");
+const ACCESS_LEVEL_ADMIN = 2;
 const uploadDir = path.join(__dirname, "../uploads");
 if (!fs.existsSync(uploadDir)) {
     fs.mkdirSync(uploadDir, { recursive:true});
@@ -20,13 +23,42 @@ const storage = multer.diskStorage({
         cb(null, uploadDir);
     },
     filename: (req, file, cb) => {
-        cb(null, `${Date.now()}-${file.originalname}`);
+        cb(null, `${Date.now()}-${file.originalname.replace(/\s+/g, "-")}`);
     }
 });
-const upload = multer({ storage });
+const upload = multer({
+    storage,
+    limits: { fileSize: 5 * 1024 * 1024 },
+    fileFilter: (req, file, cb) => cb(null, file.mimetype.startsWith("image/"))
+});
 
 
-router.use("/uploads", express.static(uploadDir));
+router.post("/register", upload.single("profilePic"), validateUserRegistration, async (req, res) => {
+    const { name, email, password } = req.body;
+
+    try {
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(400).json({ errorMessage: "Email already registered." });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        // new accounts are always customers, admins are only made on the server
+        await new User({
+            name,
+            email,
+            password: hashedPassword,
+            accessLevel: 1,
+            profilePic: req.file ? `/uploads/${req.file.filename}` : ""
+        }).save();
+
+        res.status(201).json({ message: "User registered successfully." });
+    } catch (error) {
+        console.error("Registration error:", error);
+        res.status(500).json({ errorMessage: "Server error." });
+    }
+});
 
 
 router.post("/login", async (req, res) => {
@@ -56,7 +88,7 @@ router.post("/login", async (req, res) => {
             role: user.accessLevel,
             name: user.name,
             email: user.email,
-            profilePic: user.profilePic ? `${process.env.SERVER_HOST}/uploads/${user.profilePic}` : ""
+            profilePic: user.profilePic || ""
         });
 
     } catch (error) {
@@ -66,21 +98,14 @@ router.post("/login", async (req, res) => {
 });
 
 
-router.post("/upload-profile-pic", upload.single("image"), async (req, res) => {
+router.post("/upload-profile-pic", auth, upload.single("image"), async (req, res) => {
     if (!req.file) {
         return res.status(400).json({ errorMessage: "No file uploaded." });
     }
 
     try {
-        const profilePicFilename = req.file.filename;
-        const userId = req.body.userId;
-
-        if (!userId || userId === "null") {
-            return res.status(400).json({ errorMessage: "Invalid user ID." });
-        }
-
-        const profilePicUrl = `/uploads/${profilePicFilename}`;
-        const user = await User.findByIdAndUpdate(userId, { profilePic: profilePicUrl }, { new: true });
+        const profilePicUrl = `/uploads/${req.file.filename}`;
+        const user = await User.findByIdAndUpdate(req.user.id, { profilePic: profilePicUrl }, { new: true });
 
         if (!user) {
             return res.status(404).json({ errorMessage: "User not found." });
@@ -94,7 +119,11 @@ router.post("/upload-profile-pic", upload.single("image"), async (req, res) => {
 });
 
 
-router.get("/profile/:userId", async (req, res) => {
+router.get("/profile/:userId", auth, async (req, res) => {
+    if (req.user.id !== req.params.userId && req.user.role !== ACCESS_LEVEL_ADMIN) {
+        return res.status(403).json({ errorMessage: "Access denied." });
+    }
+
     try {
         const user = await User.findById(req.params.userId, { password: 0 });
 
@@ -110,6 +139,33 @@ router.get("/profile/:userId", async (req, res) => {
 
     } catch (error) {
         console.error("Error fetching user profile:", error);
+        res.status(500).json({ errorMessage: "Server error." });
+    }
+});
+
+
+router.get("/", auth, checkRole(ACCESS_LEVEL_ADMIN), async (req, res) => {
+    try {
+        const users = await User.find({}, { password: 0 });
+        res.json(users);
+    } catch (error) {
+        res.status(500).json({ errorMessage: "Server error." });
+    }
+});
+
+
+router.delete("/:id", auth, checkRole(ACCESS_LEVEL_ADMIN), async (req, res) => {
+    if (req.params.id === req.user.id) {
+        return res.status(400).json({ errorMessage: "You can't delete your own account." });
+    }
+
+    try {
+        const user = await User.findByIdAndDelete(req.params.id);
+        if (!user) {
+            return res.status(404).json({ errorMessage: "User not found." });
+        }
+        res.json({ message: "User deleted." });
+    } catch (error) {
         res.status(500).json({ errorMessage: "Server error." });
     }
 });
